@@ -124,3 +124,49 @@ img{
     text-align:center;
     box-shadow: 2px 2px 3px #999;  
 }
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+}
+
+.center-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 80%;
+  border: 1px solid rgb(163, 157, 157);
+  border-radius: 60px;
+  box-shadow: 5px 5px 6px 2px gray;
+  margin: 12px auto;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.horizontal-situation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;  
+    justify-content: center;
+    width: 100%; Important: gives the 'flex: 1' kids a total width to split
+}
+
+.vertical-line {
+    width: 1px;
+    height:300px;
+    background-color: black;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.content-side {
+    flex: 1; /* This forces both sides to take up exactly 50% of the space */
+    display: flex;
+    justify-content: center; /* Centers the image/text within its 50% slice */
+    align-items: center;
+}
