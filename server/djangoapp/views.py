@@ -75,7 +75,7 @@ def registration(request):
         user = User.objects.create_user(
                                         username=username,
                                         first_name=first_name,
-                                        last_name=last_name, password=password, 
+                                        last_name=last_name, password=password,
                                         email=email)
         # Login the user and redirect to list page
         login(request, user)
