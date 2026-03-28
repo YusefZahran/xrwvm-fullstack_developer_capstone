@@ -1,86 +1,146 @@
-.navcontainer{
+/* ── Login / Register modal page ── */
+.auth-page {
+  min-height: calc(100vh - 72px);
   display: flex;
-  flex: 1;
-
-  flex-direction: row;
-  margin: auto;
-  margin-top: 2%;
-  background-color: rgb(97, 64, 128);
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--color-bg);
 }
 
-.navitems{
+.auth-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 420px;
+  padding: 44px 40px;
+  animation: fadeUp 0.3s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.auth-logo {
+  width: 52px;
+  height: 52px;
+  background: var(--color-navy);
+  border-radius: 12px;
   display: flex;
-  flex-direction: row;
-  padding: 20px;
-  flex: 1;
-  justify-content: flex-start;
-  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-amber);
+  margin: 0 auto 20px;
 }
 
-.nav_item{
-  margin-left:15px;
-  font-size: 20px;
-  color: azure;
-  align-self: center;
+.auth-title {
+  font-size: 1.9rem;
+  color: var(--color-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.input_panel {
-  display: flex;
-  flex-direction: row;
-  padding: 20px;
-  flex: 1;
-  justify-content: flex-end;
-  justify-self: center;
+.auth-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 6px;
 }
 
-.input_field{
-  height:40px;
-  width:200px; 
-  font-size: medium;
-  margin:.5cm;
-}
-
-
-.action_button{
-  cursor: pointer;
-  font-size: large;
-  color: rgb(97, 64, 128);
-  border-radius: 10px;
-  height:40px;
-  padding-left:.5cm;
-  padding-right: .5cm;
-  margin: .5cm;
-}
-
-.submit:hover {
-  background-color: wheat;
-}
-
-.small_header{
-  font: 30px sans-serif;
-  color:azure;
-  margin: .5cm;
-}
-
-.username{
-  font: 30px sans-serif;
-  color:azure;
-  margin: .5cm;
-  justify-content: 'flex-end';
-  align-self:flex-end;
-}
-
-.login_panel {
+/* Form */
+.auth-form {
   display: flex;
   flex-direction: column;
-  margin:auto;
-  margin: 0 auto;
-  width: 50%; 
-  padding: 20px;
-  flex: 1;
-  justify-content:center;
-  align-items: center;
-  vertical-align: middle;
-  
+  gap: 18px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.form-input {
+  padding: 11px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--color-amber);
+  box-shadow: 0 0 0 3px rgba(232,160,32,0.15);
+}
+.form-input::placeholder {
+  color: var(--color-text-light);
+}
+
+.auth-submit {
+  margin-top: 8px;
+  padding: 13px;
+  background: var(--color-navy);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.925rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-body);
+}
+.auth-submit:hover {
+  background: var(--color-navy-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(15,25,35,0.25);
+}
+
+.auth-message {
+  text-align: center;
+  font-size: 0.875rem;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+}
+.auth-message.error {
+  background: var(--color-negative-bg);
+  color: var(--color-negative);
+}
+.auth-message.success {
+  background: var(--color-positive-bg);
+  color: var(--color-positive);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+.auth-footer a {
+  color: var(--color-amber-dark);
+  font-weight: 600;
+}
+.auth-footer a:hover {
+  color: var(--color-amber);
 }

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+
+  mongo_db:
+    image: mongo:latest
+    container_name: mongo_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nodeapp:
+    build: ./database
+    container_name: nodeapp
+    ports:
+      - "3030:3030"
+    environment:
+      MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
+    depends_on:
+      mongo_db:
+        condition: service_healthy
+
+  djangoapp:
+    build: .
+    container_name: djangoapp
+    ports:
+      - "8000:8000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
+    depends_on:
+      - nodeapp
+
+volumes:
+  mongo_data:

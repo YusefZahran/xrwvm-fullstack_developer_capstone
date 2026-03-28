@@ -1,0 +1,220 @@
+/* ── Dealer detail page ── */
+
+/* Dealer header banner */
+.dealer-header {
+  background: var(--color-navy);
+  padding: 44px 0 40px;
+  margin-bottom: 40px;
+}
+
+.dealer-header-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.dealer-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.825rem;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color var(--transition);
+}
+.dealer-back-link:hover { color: rgba(255,255,255,0.85); }
+
+.dealer-header-content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.dealer-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dealer-header-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--color-amber);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  flex-shrink: 0;
+}
+
+.dealer-header-info h1 {
+  font-size: 2.4rem;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+
+.dealer-header-location {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dealer-write-review-btn {
+  background: var(--color-amber);
+  color: var(--color-navy);
+  padding: 11px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition);
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+.dealer-write-review-btn:hover {
+  background: var(--color-amber-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(232,160,32,0.35);
+}
+.dealer-write-review-btn.disabled {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+  pointer-events: none;
+}
+
+/* Reviews section */
+.reviews-section {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.reviews-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.reviews-section-title {
+  font-size: 1.8rem;
+  color: var(--color-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.reviews-count-badge {
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+}
+
+/* Review cards */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 24px 28px;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.review-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.review-author-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--color-navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-amber);
+  flex-shrink: 0;
+}
+
+.review-author-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.review-purchase-date {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.review-text {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.review-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.review-car-tag {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  padding: 4px 12px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}

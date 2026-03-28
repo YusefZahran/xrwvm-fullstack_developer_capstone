@@ -1,72 +1,85 @@
-import React, { useState } from 'react';
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import Header from '../Header/Header';
 
-const Login = ({ onClose }) => {
-
+const Login = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [open,setOpen] = useState(true)
-
-  let login_url = window.location.origin+"/djangoapp/login";
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("error");
+  const navigate = useNavigate();
 
   const login = async (e) => {
     e.preventDefault();
-
-    const res = await fetch(login_url, {
+    setMessage("");
+    try {
+      const res = await fetch("/djangoapp/login", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "userName": userName,
-            "password": password
-        }),
-    });
-    
-    const json = await res.json();
-    if (json.status != null && json.status === "Authenticated") {
-        sessionStorage.setItem('username', json.userName);
-        setOpen(false);        
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName, password }),
+      });
+      const data = await res.json();
+      if (data.status === "Authenticated") {
+        localStorage.setItem("username", data.userName);
+        setMessageType("success");
+        setMessage("Logged in successfully! Redirecting…");
+        setTimeout(() => navigate("/"), 800);
+      } else {
+        setMessageType("error");
+        setMessage("Invalid username or password.");
+      }
+    } catch {
+      setMessageType("error");
+      setMessage("Something went wrong. Please try again.");
     }
-    else {
-      alert("The user could not be authenticated.")
-    }
-};
-
-  if (!open) {
-    window.location.href = "/";
   };
-  
 
   return (
-    <div>
-      <Header/>
-    <div onClick={onClose}>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-        className='modalContainer'
-      >
-          <form className="login_panel" style={{}} onSubmit={login}>
-              <div>
-              <span className="input_field">Username </span>
-              <input type="text"  name="username" placeholder="Username" className="input_field" onChange={(e) => setUserName(e.target.value)}/>
-              </div>
-              <div>
-              <span className="input_field">Password </span>
-              <input name="psw" type="password"  placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)}/>            
-              </div>
-              <div>
-              <input className="action_button" type="submit" value="Login"/>
-              <input className="action_button" type="button" value="Cancel" onClick={()=>setOpen(false)}/>
-              </div>
-              <a className="loginlink" href="/register">Register Now</a>
-          </form>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="auth-logo">BC</div>
+          <h1 className="auth-title">Welcome Back</h1>
+          <p className="auth-subtitle">Sign in to your account</p>
+        </div>
+
+        <form className="auth-form" onSubmit={login}>
+          <div className="form-field">
+            <label className="form-label" htmlFor="username">Username</label>
+            <input
+              id="username"
+              className="form-input"
+              type="text"
+              placeholder="Enter your username"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label" htmlFor="password">Password</label>
+            <input
+              id="password"
+              className="form-input"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {message && (
+            <div className={`auth-message ${messageType}`}>{message}</div>
+          )}
+
+          <button type="submit" className="auth-submit">Sign In</button>
+        </form>
+
+        <div className="auth-footer">
+          Don't have an account? <Link to="/register">Register here</Link>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

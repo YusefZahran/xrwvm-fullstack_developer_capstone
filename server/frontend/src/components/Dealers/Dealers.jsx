@@ -1,96 +1,137 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Dealers.css";
-import "../assets/style.css";
-import Header from '../Header/Header';
-import review_icon from "../assets/reviewicon.png"
 
 const Dealers = () => {
   const [dealersList, setDealersList] = useState([]);
-  // let [state, setState] = useState("")
-  let [states, setStates] = useState([])
+  const [states, setStates] = useState([]);
+  const [selectedState, setSelectedState] = useState("All");
+  const [loading, setLoading] = useState(true);
 
-  // let root_url = window.location.origin
-  let dealer_url ="/djangoapp/get_dealers";
-  
-  let dealer_url_by_state = "/djangoapp/get_dealers/";
- 
-  const filterDealers = async (state) => {
-    dealer_url_by_state = dealer_url_by_state+state;
-    const res = await fetch(dealer_url_by_state, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    if(retobj.status === 200) {
-      let state_dealers = Array.from(retobj.dealers)
-      setDealersList(state_dealers)
-    }
-  }
+  const fetchDealers = async (state = "All") => {
+    setLoading(true);
+    try {
+      const url =
+        state === "All"
+          ? "/djangoapp/get_dealers"
+          : `/djangoapp/get_dealers/${state}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const dealers = data.dealers || [];
+      setDealersList(dealers);
 
-  const get_dealers = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    if(retobj.status === 200) {
-      let all_dealers = Array.from(retobj.dealers)
-      let states = [];
-      all_dealers.forEach((dealer)=>{
-        states.push(dealer.state)
-      });
-
-      setStates(Array.from(new Set(states)))
-      setDealersList(all_dealers)
-    }
-  }
-  useEffect(() => {
-    get_dealers();
-  },[]);  
-
-
-let isLoggedIn = sessionStorage.getItem("username") != null ? true : false;
-return(
-  <div>
-      <Header/>
-
-     <table className='table'>
-      <tr>
-      <th>ID</th>
-      <th>Dealer Name</th>
-      <th>City</th>
-      <th>Address</th>
-      <th>Zip</th>
-      <th>
-      <select name="state" id="state" onChange={(e) => filterDealers(e.target.value)}>
-      <option value="" selected disabled hidden>State</option>
-      <option value="All">All States</option>
-      {states.map(state => (
-          <option value={state}>{state}</option>
-      ))}
-      </select>        
-
-      </th>
-      {isLoggedIn ? (
-          <th>Review Dealer</th>
-         ):<></>
+      if (state === "All") {
+        const uniqueStates = [...new Set(dealers.map((d) => d.state))].sort();
+        setStates(uniqueStates);
       }
-      </tr>
-     {dealersList.map(dealer => (
-        <tr>
-          <td>{dealer['id']}</td>
-          <td><a href={'/dealer/'+dealer['id']}>{dealer['full_name']}</a></td>
-          <td>{dealer['city']}</td>
-          <td>{dealer['address']}</td>
-          <td>{dealer['zip']}</td>
-          <td>{dealer['state']}</td>
-          {isLoggedIn ? (
-            <td><a href={`/postreview/${dealer['id']}`}><img src={review_icon} className="review_icon" alt="Post Review"/></a></td>
-           ):<></>
-          }
-        </tr>
-      ))}
-     </table>;
-  </div>
-)
-}
+    } catch (err) {
+      console.error("Error fetching dealers:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-export default Dealers
+  useEffect(() => {
+    fetchDealers();
+  }, []);
+
+  const handleStateChange = (e) => {
+    const val = e.target.value;
+    setSelectedState(val);
+    fetchDealers(val);
+  };
+
+  // Initials from dealer name for the icon
+  const getInitials = (name = "") => {
+    const words = name.trim().split(" ");
+    return words.length >= 2
+      ? (words[0][0] + words[words.length - 1][0]).toUpperCase()
+      : name.slice(0, 2).toUpperCase();
+  };
+
+  return (
+    <>
+      {/* Hero */}
+      <div className="dealers-hero">
+        <div className="dealers-hero-inner">
+          <div className="dealers-hero-tag">Browse Network</div>
+          <h1>Find a Dealership</h1>
+          <p>
+            Browse our nationwide network of certified dealerships and read real
+            customer reviews.
+          </p>
+        </div>
+      </div>
+
+      {/* Filter bar */}
+      <div className="dealers-filter-bar">
+        <span className="filter-label">Filter by state</span>
+        <select
+          className="filter-select"
+          value={selectedState}
+          onChange={handleStateChange}
+        >
+          <option value="All">All States</option>
+          {states.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        {!loading && (
+          <span className="dealers-count">
+            Showing <strong>{dealersList.length}</strong> dealership
+            {dealersList.length !== 1 ? "s" : ""}
+          </span>
+        )}
+      </div>
+
+      {/* Grid */}
+      <div className="dealers-grid">
+        {loading ? (
+          <div className="loading-state" style={{ gridColumn: "1/-1" }}>
+            <div className="spinner" />
+            Loading dealerships…
+          </div>
+        ) : dealersList.length === 0 ? (
+          <div className="empty-state" style={{ gridColumn: "1/-1" }}>
+            <h3>No Dealerships Found</h3>
+            <p>Try selecting a different state filter.</p>
+          </div>
+        ) : (
+          dealersList.map((dealer) => (
+            <Link
+              key={dealer.id}
+              to={`/dealer/${dealer.id}`}
+              className="dealer-card"
+            >
+              <div className="dealer-card-accent" />
+              <div className="dealer-card-body">
+                <div className="dealer-card-header">
+                  <div>
+                    <div className="dealer-card-name">{dealer.full_name}</div>
+                  </div>
+                  <div className="dealer-icon">{getInitials(dealer.full_name)}</div>
+                </div>
+                <div className="dealer-card-meta">
+                  <div className="dealer-meta-item">
+                    <span className="dealer-meta-icon">📍</span>
+                    {dealer.city}, {dealer.state} {dealer.zip}
+                  </div>
+                  <div className="dealer-meta-item">
+                    <span className="dealer-meta-icon">📞</span>
+                    {dealer.address}
+                  </div>
+                </div>
+              </div>
+              <div className="dealer-card-footer">
+                <span className="dealer-reviews-link">View Reviews</span>
+                <span className="dealer-arrow">→</span>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
+    </>
+  );
+};
+
+export default Dealers;
