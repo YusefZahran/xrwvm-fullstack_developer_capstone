@@ -18,17 +18,19 @@ const Reviews = require('./review');
 
 const Dealerships = require('./dealership');
 
-try {
-  Reviews.deleteMany({}).then(()=>{
-    Reviews.insertMany(reviews_data.reviews);
-  });
-  Dealerships.deleteMany({}).then(()=>{
-    Dealerships.insertMany(dealerships_data.dealerships);
-  });
-  
-} catch (error) {
-  res.status(500).json({ error: 'Error fetching documents' });
+async function seedIfEmpty() {
+  const reviewCount = await Reviews.countDocuments();
+  if (reviewCount === 0) {
+    await Reviews.insertMany(reviews_data['reviews']);
+    console.log('Reviews seeded.');
+  }
+  const dealerCount = await Dealerships.countDocuments();
+  if (dealerCount === 0) {
+    await Dealerships.insertMany(dealerships_data['dealerships']);
+    console.log('Dealerships seeded.');
+  }
 }
+seedIfEmpty();
 
 
 // Express route to home

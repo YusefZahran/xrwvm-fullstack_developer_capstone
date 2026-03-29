@@ -58,7 +58,7 @@ def registration(request):
     password = data['password']
     first_name = data['firstName']
     last_name = data['lastName']
-    email = data['email']
+    email = data.get('email', '')
     username_exist = False
     # email_exist = False
     try:
