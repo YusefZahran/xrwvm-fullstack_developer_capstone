@@ -26,7 +26,7 @@ const Dealer = () => {
         ]);
         const dealerData = await dealerRes.json();
         const reviewsData = await reviewsRes.json();
-        setDealer(dealerData.dealer?.[0] || dealerData.dealer || null);
+        setDealer(dealerData.dealers?.[0] || dealerData.dealer || null);
         setReviews(reviewsData.reviews || []);
       } catch (err) {
         console.error("Error loading dealer data:", err);

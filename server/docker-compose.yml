@@ -37,6 +37,9 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
       MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
+      backend_url: ${backend_url}
+      sentiment_analyzer_url: ${sentiment_analyzer_url}
+
     depends_on:
       - nodeapp
 
