@@ -38,8 +38,8 @@ const Dealer = () => {
   }, [id]);
 
   const sentimentIcon = (sentiment) => {
-    if (sentiment === "Positive") return "👍";
-    if (sentiment === "Negative") return "👎";
+    if (sentiment === "positive") return "👍";
+    if (sentiment === "negative") return "👎";
     return "😐";
   };
 

@@ -22,9 +22,9 @@ const PostReview = () => {
   const [messageType, setMessageType] = useState("success");
 
   // Derive unique makes and models from cars array
-  const makes = [...new Set(cars.map((c) => c.make))].sort();
+  const makes = [...new Set(cars.map((c) => c.CarMake))].sort();
   const models = carMake
-    ? [...new Set(cars.filter((c) => c.make === carMake).map((c) => c.model))].sort()
+    ? [...new Set(cars.filter((c) => c.CarMake === carMake).map((c) => c.CarModel))].sort()
     : [];
 
   const currentYear = new Date().getFullYear();

@@ -1,6 +1,8 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from nltk.sentiment import SentimentIntensityAnalyzer
 import json
+import urllib.parse
+
 app = Flask("Sentiment Analyzer")
 
 sia = SentimentIntensityAnalyzer()
@@ -12,23 +14,21 @@ def home():
     Use /analyze/text to get the sentiment"
 
 
-@app.get('/analyze/<input_txt>')
-def analyze_sentiment(input_txt):
-
-    scores = sia.polarity_scores(input_txt)
-    print(scores)
-    pos = float(scores['pos'])
-    neg = float(scores['neg'])
-    neu = float(scores['neu'])
-    res = "positive"
-    print("pos neg nue ", pos, neg, neu)
-    if (neg > pos and neg > neu):
+@app.post('/analyze')
+def analyze_sentiment():
+    data = request.get_json(force=True, silent=True)
+    if not data:
+        return jsonify({"sentiment": "neutral"})
+    text = data.get('text', '')
+    scores = sia.polarity_scores(text)
+    compound = scores['compound']
+    if compound >= 0.05:
+        res = "positive"
+    elif compound <= -0.05:
         res = "negative"
-    elif (neu > neg and neu > pos):
+    else:
         res = "neutral"
-    res = json.dumps({"sentiment": res})
-    print(res)
-    return res
+    return jsonify({"sentiment": res})
 
 
 if __name__ == "__main__":

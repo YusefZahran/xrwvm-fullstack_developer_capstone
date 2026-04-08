@@ -27,7 +27,8 @@ services:
     depends_on:
       mongo_db:
         condition: service_healthy
-
+    restart: on-failure
+    
   djangoapp:
     build: .
     container_name: djangoapp
@@ -43,5 +44,11 @@ services:
     depends_on:
       - nodeapp
 
+  sentiment_analyzer:
+    build: ./djangoapp/microservices
+    container_name: sentiment_analyzer
+    ports:
+      - "5050:5000"
+  
 volumes:
   mongo_data:

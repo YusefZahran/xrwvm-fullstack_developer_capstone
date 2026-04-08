@@ -14,8 +14,12 @@ const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'))
 const username = process.env.MONGO_DB_USERNAME;
 const password = process.env.MONGO_DB_PASSWORD;
 
-mongoose.connect(`mongodb://${username}:${password}@mongo_db:27017/`, {'dbName':'dealershipsDB'});
-
+mongoose.connect(`mongodb://${username}:${password}@mongo_db:27017/`, {'dbName':'dealershipsDB'})
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
 const Reviews = require('./review');
 
 const Dealerships = require('./dealership');
